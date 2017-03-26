@@ -1,0 +1,116 @@
+@import "~compass-mixins/lib/compass/_reset";
+@import "~compass-mixins/lib/_compass";
+
+* {
+    &, &:after, &:before {
+        vertical-align: top;
+        @include box-sizing(border-box);
+        // @include selection(rgba(150, 200, 255, 1), rgba(255, 255, 255, 1));
+    }
+}
+
+html {
+    height: 100%;
+    body {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #eee;
+
+        // @include font-smoothing(antialiased);
+    }
+}
+
+$headerHeight: 40px;
+$width: 1000px;
+$pcMenuWidth: 200px;
+$mMenuWidth: 300px;
+
+#header {
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $headerHeight;
+    text-align: center;
+    z-index: 30;
+    background-color: #03a9f4;
+    @include box-shadow(0 1px 8px rgba(0, 0, 0, 0.3));
+    .content {
+        display: inline-block;
+        width: 100%;
+        max-width: $width;
+        margin: 0 auto;
+        @include clearfix();
+
+        .menu {
+            width: $headerHeight;
+            height: $headerHeight;
+            line-height: $headerHeight;
+            float: left;
+            cursor: pointer;
+        }
+    }
+}
+
+#content {
+    display: inline-block;
+    width: 100%;
+    padding-top: $headerHeight;
+
+    .content {
+        display: inline-block;
+        width: 100%;
+        max-width: $width;
+        margin: 0 auto;
+        padding: 10px;
+        padding-left: $pcMenuWidth + 10px;
+        article {
+            background-color: white;
+            @include border-radius(5px);
+            @include box-shadow(0 1px 4px 0 rgba(0,0,0,0.14));
+        }
+    }
+}
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: $pcMenuWidth;
+    height: 100%;
+    z-index: 20;
+    padding-top: $headerHeight + 10px;
+    // background-color: rgba(0, 0, 255, 0.2);
+    @include range-width-in(1000px) {
+        left: calc(50% - 1000px / 2);
+    }
+    a {
+        display: inline-block;
+        color: rgba(135, 135, 135, 1);
+        width: 100%;
+        height: 45px;
+        line-height: 45px;
+        padding: 0 10px;
+        padding-left: 20px;
+        text-decoration: none;
+        text-align: left;
+        @include transition(background-color .3s);
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    }
+    span {
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: rgba(221, 221, 221, 1);
+        margin: 10px 0;
+    }
+}
