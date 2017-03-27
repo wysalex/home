@@ -24,10 +24,10 @@ html {
     }
 }
 
-$headerHeight: 40px;
+$headerHeight: 65px;
 $width: 1000px;
 $pcMenuWidth: 200px;
-$mMenuWidth: 300px;
+$mMenuWidth: 280px;
 
 #header {
     display: inline-block;
@@ -58,6 +58,8 @@ $mMenuWidth: 300px;
 }
 
 #content {
+    position: relative;
+    z-index: 5;
     display: inline-block;
     width: 100%;
     padding-top: $headerHeight;
@@ -68,13 +70,20 @@ $mMenuWidth: 300px;
         max-width: $width;
         margin: 0 auto;
         padding: 10px;
-        padding-left: $pcMenuWidth + 10px;
-        article {
-            background-color: white;
-            @include border-radius(5px);
-            @include box-shadow(0 1px 4px 0 rgba(0,0,0,0.14));
+        @include range-width-in(700px) {
+            padding-left: $pcMenuWidth + 10px;
+            @include transition(padding-left 0.3s);
         }
     }
+}
+
+#article {
+    display: inline-block;
+    width: 100%;
+    max-width: 650px;
+    background-color: white;
+    @include border-radius(5px);
+    @include box-shadow(0 1px 4px 0 rgba(0,0,0,0.14));
 }
 
 #menu {
@@ -85,12 +94,71 @@ $mMenuWidth: 300px;
     width: $pcMenuWidth;
     height: 100%;
     z-index: 20;
-    padding-top: $headerHeight + 10px;
-    // background-color: rgba(0, 0, 255, 0.2);
+    @include opacity(1);
+
+    @include range-width-in(0px, 700px - 1px) {
+        left: 0 - $mMenuWidth;
+        width: $mMenuWidth;
+        background-color: white;
+        z-index: 40;
+        @include box-shadow(0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.4));
+        @include opacity(0);
+        @include transition(left 0.3s, opacity 0.3s);
+    }
+    @include range-width-in(700px) {
+        padding-top: $headerHeight + 10px;
+        @include transition(opacity 0.3s, top 0.3s);
+    }
     @include range-width-in(1000px) {
         left: calc(50% - 1000px / 2);
     }
-    a {
+    + label {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: -999;
+        cursor: pointer;
+        @include opacity(0);
+        // @include transition(opacity 0.3s);
+        @include range-width-in(700px) {
+            display: none;
+        }
+    }
+    header {
+        display: inline-block;
+        width: 100%;
+        padding: 0 10px;
+        height: 65px;
+        line-height: 65px;
+        @include clearfix();
+        border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+        @include range-width-in(700px) {
+            display: none;
+        }
+
+        > * {
+            display: inline-block;
+            float: left;
+        }
+        span {
+            width: calc(100% - 45px);
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: left;
+            padding-left: 10px;
+        }
+        label {
+            width: 45px;
+            height: 65px;
+            line-height: 65px;
+            cursor: pointer;
+        }
+    }
+    > a {
         display: inline-block;
         color: rgba(135, 135, 135, 1);
         width: 100%;
@@ -106,11 +174,45 @@ $mMenuWidth: 300px;
             background-color: rgba(0, 0, 0, 0.05);
         }
     }
-    span {
+    > span {
         display: block;
         width: 100%;
         height: 1px;
         background-color: rgba(221, 221, 221, 1);
         margin: 10px 0;
+    }
+}
+
+.checkStatus {
+    position: fixed;
+    top: -999;
+    left: -999;
+    display: none;
+    @include opacity(0);
+}
+
+#menuButton {
+    &:checked {
+        @include range-width-in(700px) {
+            ~ #menu {
+            top: -100%;
+            @include opacity(0);
+            }
+            ~ #content {
+                .content {
+                    padding-left: 10px;
+                }
+            }
+        }
+        @include range-width-in(0, 700px - 1px) {
+            ~ #menu {
+                left: 0;
+                @include opacity(1);
+                + label {
+                    @include opacity(1);
+                    z-index: 40 - 1;
+                }
+            }
+        }
     }
 }
