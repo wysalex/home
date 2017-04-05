@@ -1,5 +1,6 @@
 @import "~compass-mixins/lib/compass/_reset";
 @import "~compass-mixins/lib/_compass";
+@import "assets/_custom";
 
 * {
     &, &:after, &:before {
@@ -18,16 +19,21 @@ html {
         margin: 0;
         width: 100%;
         height: 100%;
-        background-color: #eee;
+        font-size: 14px;
+        font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif,"微軟正黑體", "Microsoft JhengHei";
+        color: rgba(50, 50, 50, 0.8);
+        background: rgba(240, 245, 240, 1.00);
 
         // @include font-smoothing(antialiased);
     }
 }
 
 $headerHeight: 65px;
+$pcHeaderHeight: 65px;
+$mHeaderHeight: 50px;
 $width: 1000px;
-$pcMenuWidth: 200px;
-$mMenuWidth: 280px;
+$pcMenuWidth: 180px;
+$mMenuWidth: 220px;
 
 #header {
     display: inline-block;
@@ -35,11 +41,17 @@ $mMenuWidth: 280px;
     top: 0;
     left: 0;
     width: 100%;
-    height: $headerHeight;
     text-align: center;
     z-index: 30;
     background-color: #03a9f4;
     @include box-shadow(0 1px 8px rgba(0, 0, 0, 0.3));
+    @include transition(height .3s);
+    @include range-width-in(0px, 600px - 1px) {
+        height: $mHeaderHeight;
+    }
+    @include range-width-in(600px) {
+        height: $pcHeaderHeight;
+    }
     .content {
         display: inline-block;
         width: 100%;
@@ -48,9 +60,17 @@ $mMenuWidth: 280px;
         @include clearfix();
 
         .menu {
-            width: $headerHeight;
-            height: $headerHeight;
-            line-height: $headerHeight;
+            @include transition(width .3s, height .3s, line-height .3s);
+            @include range-width-in(0px, 600px - 1px) {
+                width: $mHeaderHeight;
+                height: $mHeaderHeight;
+                line-height: $mHeaderHeight;
+            }
+            @include range-width-in(600px) {
+                width: $pcHeaderHeight;
+                height: $pcHeaderHeight;
+                line-height: $pcHeaderHeight;
+            }
             float: left;
             cursor: pointer;
         }
@@ -73,6 +93,62 @@ $mMenuWidth: 280px;
         @include range-width-in(700px) {
             padding-left: $pcMenuWidth + 10px;
             @include transition(padding-left 0.3s);
+        }
+        > input {
+            @include input;
+            @include input-placeholder {
+                font-size: 15px;
+            }
+        }
+        > article {
+            display: inline-block;
+            width: 100%;
+            max-width: 650px;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: white;
+            @include border-radius(5px);
+            @include box-shadow(0 1px 4px 0 rgba(0,0,0,0.14));
+            > header {
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+                // border-bottom: 1px solid #999;
+                > * {
+                    display: inline-block;
+                    width: 100%;
+                    float: left;
+                }
+                .article_title {
+                    font-size: 28px;
+                    text-align: left;
+                    width: calc(100% - 100px);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                > time {
+                    font-size: 14px;
+                    color: #999;
+                    text-align: right;
+                    width: 100px;
+                }
+            }
+            > footer {
+                display: inline-block;
+                width: 100%;
+                padding-top: 15px;
+                > a {
+                    float: right;
+                }
+            }
+            > span {
+                display: block;
+                width: 100%;
+                height: 1px;
+                background-color: rgba(221, 221, 221, 1);
+                margin: 10px 0;
+            }
         }
     }
 }
@@ -141,7 +217,7 @@ $mMenuWidth: 280px;
 
         > * {
             display: inline-block;
-            float: left;
+            // float: left;
         }
         span {
             width: calc(100% - 45px);
@@ -215,4 +291,9 @@ $mMenuWidth: 280px;
             }
         }
     }
+}
+
+.read-btn {
+    @extend .btn;
+    @include button-bg(#3498db);
 }
